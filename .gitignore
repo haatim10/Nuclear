@@ -1,0 +1,12 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# macOS
+.DS_Store
+
+# Local matplotlib / font caches (not needed in repo)
+.matplotlib_cache/
+.cache/
