@@ -246,7 +246,7 @@ with \(\tau = Q^2/(4M^2)\).
 
 - This is the **dipole EM form-factor approximation**.
 - KamLAND uses the more modern **BBBA05** parametrization for electron-scattering data.
-- **TODO:** replace dipole EM form factors with BBBA05 if required by the professor.
+- **TODO:** replace dipole EM form factors with BBBA05 if required.
 
 ---
 
@@ -336,6 +336,33 @@ Sample values at \(Q^2 = 0.45\) GeV² (cm²/(GeV/c)², \(g_s^A = 0\)):
 | `nubar_proton_vs_neutron.png` | \(\bar\nu p\) vs \(\bar\nu n\) cross sections | KamLAND + Ahrens engine | Baseline \(g_s^A = 0\) |
 | `neutron_to_proton_ratio.png` | \((d\sigma/dQ^2)_n / (d\sigma/dQ^2)_p\) for \(\nu\) and \(\bar\nu\) | KamLAND + Ahrens engine | Baseline \(g_s^A = 0\) |
 | `sin2thetaW_sensitivity_proton_neutron.png` | \(\sin^2\theta_W\) sweep for \(\nu p\) and \(\nu n\) | KamLAND + Ahrens engine | Two panels; baseline \(g_s^A = 0\) |
+| `pn_ratio_nu.png` | \(\sigma_p/\sigma_n\) vs \(Q^2\) for \(\nu\), \(\sin^2\theta_W\) sweep | KamLAND + Ahrens engine | Baseline \(g_s^A = 0\) |
+| `pn_ratio_nubar.png` | \(\sigma_p/\sigma_n\) vs \(Q^2\) for \(\bar\nu\), \(\sin^2\theta_W\) sweep | KamLAND + Ahrens engine | Baseline \(g_s^A = 0\) |
+| `pn_ratio_combined.png` | \(\sigma_p/\sigma_n\) vs \(Q^2\), \(\nu\) and \(\bar\nu\) panels | KamLAND + Ahrens engine | Combined view |
+
+---
+
+## \(\sigma_p / \sigma_n\) vs \(Q^2\) for \(\sin^2\theta_W\) sweep
+
+Shows how the **proton-to-neutron NC cross-section ratio** depends on \(Q^2\) and on **\(\sin^2\theta_W\)**.
+
+**Definitions:**
+
+\[
+R_\nu(Q^2) = \frac{d\sigma(\nu p)/dQ^2}{d\sigma(\nu n)/dQ^2}, \qquad
+R_{\bar\nu}(Q^2) = \frac{d\sigma(\bar\nu p)/dQ^2}{d\sigma(\bar\nu n)/dQ^2}
+\]
+
+**Implementation:**
+
+- Cross section: **Ahrens Eq. (1.14)/(1.15)** (`dsigma_dq2_nc_target`)
+- Form factors: **KamLAND Sec. II** (`nc_form_factors_kamland`)
+- Fixed \(E_\nu = 1.25\) GeV, baseline \(g_s^A = 0\) (no strange axial contribution)
+- \(\sin^2\theta_W \in \{0.10,\ 0.15,\ 0.20,\ 0.22,\ 0.25,\ 0.30\}\); **0.22** is highlighted as the Ahrens reference value
+
+**Note:** This is **\(\sigma_p/\sigma_n\)**, the inverse of the older `neutron_to_proton_ratio.png` plot (\(\sigma_n/\sigma_p\)).
+
+Running `python plot_cross_section.py` prints a table of \(R_\nu\) and \(R_{\bar\nu}\) at \(Q^2 = 0.10,\ 0.45,\ 1.05\) GeV² for each \(\sin^2\theta_W\).
 
 ---
 
@@ -391,7 +418,10 @@ NuclearProject/
     ├── nu_proton_vs_neutron.png
     ├── nubar_proton_vs_neutron.png
     ├── neutron_to_proton_ratio.png
-    └── sin2thetaW_sensitivity_proton_neutron.png
+    ├── sin2thetaW_sensitivity_proton_neutron.png
+    ├── pn_ratio_nu.png
+    ├── pn_ratio_nubar.png
+    └── pn_ratio_combined.png
 ```
 
 **Note:** `pypdf` is listed in `requirements.txt` for reading the reference PDFs locally; the plotting script does not import it.
