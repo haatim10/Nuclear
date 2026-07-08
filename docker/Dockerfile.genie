@@ -1,0 +1,49 @@
+FROM mambaorg/micromamba:1.5.8
+
+USER root
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    git \
+    build-essential \
+    gfortran \
+    cmake \
+    make \
+    wget \
+    curl \
+    pkg-config \
+    libxml2-dev \
+    liblog4cpp5-dev \
+    libboost-all-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+USER $MAMBA_USER
+
+RUN micromamba install -y -n base -c conda-forge \
+    root \
+    gsl \
+    libxml2 \
+    log4cpp \
+    boost \
+    lhapdf \
+    && micromamba clean -a -y
+
+USER root
+
+WORKDIR /opt
+
+RUN git clone https://github.com/GENIE-MC/Generator.git genie-generator
+
+WORKDIR /opt/genie-generator
+
+RUN git checkout R-3_06_02
+
+ENV GENIE_SOURCE=/opt/genie-generator
+ENV GENIE_INSTALL=/opt/genie-install
+ENV GENIE=/opt/genie-install
+ENV PATH=/opt/genie-install/bin:/opt/conda/bin:/opt/genie-generator/bin:$PATH
+ENV LD_LIBRARY_PATH=/opt/genie-install/lib:/opt/conda/lib:$LD_LIBRARY_PATH
+ENV GXMLPATH=/opt/genie-generator/config
+
+WORKDIR /work
